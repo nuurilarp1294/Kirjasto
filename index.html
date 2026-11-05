@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Test</title>
+
+    <style>
+        body {
+            background: #111827;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            background: #1f2937;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            margin: 50px auto;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-size: 17px;
+        }
+
+        p {
+            color: #d1d5db;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>IP Test</h1>
+
+    <p>
+        Tämä sivu lähettää julkisen IP-osoitteesi
+        testipalvelimelle hyväksynnälläsi.
+    </p>
+
+    <button onclick="testaaIP()">
+        Aloita testi
+    </button>
+
+    <p id="status"></p>
+
+</div>
+
+<script>
+async function testaaIP() {
+
+    const hyväksyntä = confirm(
+        "Hyväksytkö julkisen IP-osoitteesi käsittelyn testissä?"
+    );
+
+    if (!hyväksyntä) return;
+
+    document.getElementById("status").innerText =
+        "Testi käynnissä...";
+
+    try {
+
+        const response = await fetch(
+            "https://OMA-RENDER-OSOITE.onrender.com/ip",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    consent: true
+                })
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("Virhe");
+        }
+
+        document.getElementById("status").innerText =
+            "Testi onnistui!";
+
+    } catch (error) {
+
+        document.getElementById("status").innerText =
+            "Yhteys epäonnistui.";
+
+    }
+}
+</script>
+
+</body>
+</html>
